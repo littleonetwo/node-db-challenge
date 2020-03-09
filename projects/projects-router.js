@@ -14,6 +14,16 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/:id', (req, res) => {
+  Projects.getProjectByID(req.params.id)
+  .then(project => {
+    res.json(project);
+  })
+  .catch(err => {
+    res.status(500).json({ message: 'Failed to get projects' });
+  });
+});
+
 router.get('/resources', (req, res) => {
   Projects.getResources()
   .then(project => {
@@ -77,7 +87,7 @@ router.post('/', (req, res) => {
 
     const projectData = req.body;
 
-  console.log(projectData);
+  console.log("project data: ", projectData);
 
   Projects.addProject(projectData)
     .then(project =>{

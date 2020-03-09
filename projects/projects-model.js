@@ -24,9 +24,9 @@ function getProjects() {
 }
 
 
-function getProjectByID(id){
-
-  return db('projects').where(id).first();
+function getProjectByID(projects_id){
+  // console.log(db('projects').where({id}).first());
+  return db('projects').where({projects_id});
 
 }
 
@@ -60,6 +60,7 @@ function addProject(project){
 
   return db('projects').insert(project)
             .then(ids => {
+              // console.log(getProjectByID(ids[0]));
               return getProjectByID(ids[0]);
             })
 }
@@ -89,6 +90,7 @@ function addResource(resource){
 module.exports = {
   getResources,
   getResourcesForTask,
+  getProjectByID,
   getProjects,
   getTasks,
   addTask,
