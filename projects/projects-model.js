@@ -31,11 +31,12 @@ function getProjectByID(projects_id){
 }
 
 
-function getTasks(projects_id) {
+function getTasks() {
+  console.log("im here", {projects_id})
   return db('projects as a')
           .join('tasks as b', 'a.projects_id', 'b.projects_id')
-          .join('projects_tasks as c', 'b.task_id', 'c.task_id')
-          .where('a.projects_id', projects_id)
+          // .join('projects_tasks as c', 'b.task_id', 'c.task_id')
+          // .where('a.projects_id', "b.projects_id")
           .select('a.projects_name', 'a.projects_desc', 'b.task_desc');
 
 }
@@ -44,6 +45,7 @@ function getTasks2() {
   return db('projects as a')
           .join('tasks as b', 'a.projects_id', 'b.projects_id')
           .join('projects_tasks as c', 'b.task_id', 'c.task_id')
+          // .where('a.projects_id', 'c.projects_id')
           .select('a.projects_name', 'a.projects_desc', 'b.task_id', 'b.task_desc');
 
 }
@@ -70,7 +72,7 @@ function addTask(project_id, task){
   console.log(task);
   const newData = {task_desc:task.task_desc, projects_id:project_id, task_notes:task.task_notes};
 
-  db('tasks').insert(newData)
+  return db('tasks').insert(newData)
             .then(ids => {
               // db('projects_tasks').insert({projects_id:project_id, task_id:ids[0].task_id, task_status:task.task_status})
               return getTaskByID(ids[0]);
@@ -96,5 +98,6 @@ module.exports = {
   addTask,
   addProject,
   addResource,
-  getTasks2
+  getTasks2,
+  getTaskByID
 }

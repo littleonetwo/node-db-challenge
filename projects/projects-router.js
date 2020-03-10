@@ -50,10 +50,27 @@ router.get('/tasks/:id/resources', (req, res) => {
   });
 });
 
+router.get('/get/tasks', (req, res) => {
+  console.log("troubleshoot")
+  Projects.getTasks2()
+    .then(project => {
+      console.log(project)
+      if (project) {
+        res.json(project);
+      } else {
+        res.status(404).json({ message: 'Could not find Tasks' })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Failed to get projects' });
+    });
+})
+
+
 router.get('/:id/tasks', (req, res) => {
   const { id } = req.params;
 
-  Projects.getTasks(id)
+  Projects.getTaskByID(id)
   .then(project => {
     if (project) {
       res.json(project);
@@ -66,20 +83,7 @@ router.get('/:id/tasks', (req, res) => {
   });
 });
 
-router.get('/tasks', (req, res) => {
 
-  Projects.getTasks2()
-    .then(project => {
-      if (project) {
-        res.json(project);
-      } else {
-        res.status(404).json({ message: 'Could not find Tasks' })
-      }
-    })
-    .catch(err => {
-      res.status(500).json({ message: 'Failed to get projects' });
-    });
-})
 router.post('/', (req, res) => {
   if (!req.body.project_status){
     req.body.project_status = false;
